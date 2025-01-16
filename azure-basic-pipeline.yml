@@ -44,13 +44,11 @@ steps:
 
 # Conditional Execution for Listing Files
 - script: |
-    if ["$(Agent.OS)" == "Linux" ]; then
-      echo "Linux Agent detected. Listing files with ls -a"
-      ls -a
-    elif [ "$(Agent.OS)"" == "Windows_NT"]; then 
-      echo "Windows Agent detected. Listing files with dir"
+    if "%Agent.OS%" == "Windows_NT" (
+      echo "Windows Agent detected. Listing files with dir:"
       dir
-    else 
-      echo "Unknown OS detected: $(Agent.OS)"
-    if 
+    ) else ( 
+      echo "Linux Agent detected. Listing files with ls -a:"
+      ls -a
   displayName: "Listing Files based on OS"
+  condition: always()
