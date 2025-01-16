@@ -32,24 +32,30 @@ pool:
   name: 'Default'
 
 steps:
+# Printing Sample Message
 - script: echo "Hello Azure Pipelines User"
   displayName: "Hello Stage"
 
+# Step 1: Fetch the Git Repository
 - checkout: self
-  displayName: "Checkout Code"
+  displayName: "Fetching Git Repository"
 
 # Debugging the OS of the Agent
 - script: echo "Running on $(Agent.OS)"
   displayName: "Debug Agent OS"
 
-# Conditional Execution for Listing Files
+# Step 2: Verify Repository Exists and List Files
 - script: |
-    if [ "$(Agent.OS)" == "Windows_NT" ]; th
-      echo "Windows Agent detected. Listing files with dir:"
-      dir
-    else  
-      echo "Linux Agent detected. Listing files with ls -a:"
-      ls -a
-  displayName: "Listing Files based on OS"
-  # shell: bash
-  condition: always()
+    echo: "Checking Operating System"
+    echo: "Deteched OS: $(Agent.OS)"
+    if [ "$(Agent.OS)" == "Windows_NT" ]; then
+      echo "Running On Windows"
+      if [ -d "$(System.DefaultWorkingDirectory)"]; then
+        echo "Repository Exits. Listing Files"
+        dir "($System.DefaultWorkingDirectory)"
+      else 
+        echo "Repository does not exist"
+        exit 1
+      fi
+    displayName: Check Repo and List Files
+    workingDirectory: $(System.DefaultWorkingDirectory)
