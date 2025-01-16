@@ -1,30 +1,3 @@
-# trigger:
-#   - main
-
-# pool:
-#   name: 'default'
-
-# steps:
-#   - checkout: self
-
-#   - script: echo $(Agent.OS)  # For Defining the OS pipeline is running
-#     displayName: "Debug Agent OS"
-
-#   - script: echo "Hello, Azure Pipelines"
-#     displayName: "Hello Message"
-
-#   - script: ls -l
-#     displayName: "Listing Files from Linux"
-#     condition: eq(variables['Agent.OS'], 'Linux')  # Listing files based on OS (linux)
-
-#   - script: dir
-#     displayName: "Listing Files from Windows"
-#     condition: eq(variables['Agent.OS'], 'Windows_NT')  # Listing files based on OS (Windows)
-
-#   - script: |
-
-
-
 trigger:
 - main
 
@@ -46,16 +19,13 @@ steps:
 
 # Step 2: Verify Repository Exists and List Files
 - script: |
-    echo: "Checking Operating System"
-    echo: "Deteched OS: $(Agent.OS)"
     if [ "$(Agent.OS)" == "Windows_NT" ]; then
       echo "Running On Windows"
-      if [ -d "$(System.DefaultWorkingDirectory)"]; then
-        echo "Repository Exits. Listing Files"
-        dir "($System.DefaultWorkingDirectory)"
-      else 
-        echo "Repository does not exist"
-        exit 1
-      fi
-    displayName: Check Repo and List Files
-    workingDirectory: $(System.DefaultWorkingDirectory)
+      dir
+    else 
+      echo "Linux Agent detected. Listing files using ls -a: "
+      ls -a
+    fi
+
+  displayName: Check Repo and List Files
+  workingDirectory: $(System.DefaultWorkingDirectory)
