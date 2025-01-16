@@ -7,6 +7,9 @@ pool:
 steps:
   - checkout: self
 
+  - script: echo $(Agent.OS)
+    displayName: "Debug Agent OS"
+
   - script: echo "Hello, Azure Pipelines"
     displayName: "Hello Message"
 
