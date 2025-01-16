@@ -19,4 +19,4 @@ steps:
 
   - script: dir
     displayName: "List Files on Windows"
-    condition: eq(variables['Agent.OS'], 'Windows')
+    condition: eq(variables['Agent.OS'], 'Windows_NT')
