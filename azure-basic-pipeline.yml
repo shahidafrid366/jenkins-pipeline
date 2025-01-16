@@ -6,3 +6,5 @@ pool:
 
 steps:
   - script: echo "Hello, Azure Pipelines"
+  - checkout: self
+  - script: ls -l
