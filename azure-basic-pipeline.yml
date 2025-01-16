@@ -35,21 +35,22 @@ steps:
 - script: echo "Hello Azure Pipelines User"
   displayName: "Hello Stage"
 
-- script: |
-    if [ -d "jenkins-pipeline/.git"]; then 
-      echo "Git Repository already exists. Skipping Clone."
-      ls -a jenkins-pipeline
-    else 
-      echo "git repository does not exists. Cloning Repository"
-      git clone https://github.com/shahidafrid366/jenkins-pipeline.git
-      ls -a jenkins-pipeline
-    fi
-  displayName: "Checkout Code Conditionally."
+- checkout: self
+  displayName: "Checkout Code"
 
+# Debugging the OS of the Agent
+- script: echo "Running on $(Agent.OS)"
+  displayName: "Debug Agent OS"
+
+# Conditional Execution for Listing Files
 - script: |
-    echo "Cleaning workspace and re-checking out repository..."
-    rm -rf *
-    git clone https://github.com/shahidafrid366/jenkins-pipeline.git
-    ls -a 
-    ls -lart
-  displayName: "Clean Workspace and Checking out Fresh"
+    if ["$(Agent.OS)" == "Linux" ]; then
+      echo "Linux Agent detected. Listing files with ls -a"
+      ls -a
+    elif [ "$(Agent.OS)"" == "Windows_NT"]; then 
+      echo "Windows Agent detected. Listing files with dir"
+      dir
+    else 
+      echo "Unknown OS detected: $(Agent.OS)"
+    if 
+  displayName: "Listing Files based on OS"
